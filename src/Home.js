@@ -1,24 +1,26 @@
 import React from 'react'
-import axios from 'axios'
 
 import Card from './Card'
+import sampleData from '../fixtures/mock_data.json'
 
 class Home extends React.Component {
   constructor () {
     super()
     this.state = {
-      submissions: []
+      ballots: [],
+      search: ''
     }
+    this.matchesSearch = this.matchesSearch.bind(this)
+    this.updateSearch = this.updateSearch.bind(this)
   }
 
   async componentDidMount () {
-    const bookId = '58d6997b49ee860300e92889'
-    const url = `https://api.fieldbook.com/v1/${bookId}/submissions?status=Approved`
-    const response = await axios.get(url)
-    this.setState({ submissions: response.data })
+    this.setState({ ballots: sampleData })
   }
 
   render () {
+    const filteredBallots = this.state.ballots.filter(this.matchesSearch)
+
     return (
       <div className='row columns'>
         <h1>Philly Sample Ballots</h1>
@@ -28,11 +30,27 @@ class Home extends React.Component {
         <a href='https://fieldbook.com/forms/8d52a573-8399-4e88-b95a-6b3927c02fcf' className='button'>
           Submit a Sample Ballot
         </a>
+        <input
+          type='text'
+          value={this.state.search}
+          placeholder='Search by attribution'
+          onChange={this.updateSearch} />
         <div className='row small-up-2 medium-up-3 large-up-4'>
-          {this.state.submissions.map(Card)}
+          {filteredBallots.map(Card)}
         </div>
       </div>
     )
+  }
+
+  matchesSearch (ballot) {
+    const search = this.state.search
+    const lowercaseAttribution = (ballot.attribution || '').toLowerCase()
+    return !search || lowercaseAttribution.includes(search)
+  }
+
+  updateSearch (evt) {
+    const value = evt.target.value
+    this.setState({ search: value })
   }
 }
 
