@@ -27,7 +27,7 @@ class Home extends React.Component {
         <p>
           Tempor penatibus aenean a hendrerit hac sed faucibus conubia vestibulum in parturient a vestibulum fringilla senectus parturient sem eleifend fringilla condimentum a. Neque dignissim suscipit condimentum ullamcorper adipiscing dui ullamcorper adipiscing vestibulum dolor etiam urna mattis natoque duis quisque eros himenaeos.
         </p>
-        <a href='https://fieldbook.com/forms/8d52a573-8399-4e88-b95a-6b3927c02fcf' className='button'>
+        <a href='/#submit' className='button'>
           Submit a Sample Ballot
         </a>
         <input
