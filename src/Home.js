@@ -1,7 +1,11 @@
 import React from 'react'
+import axios from 'axios'
+import urljoin from 'url-join'
 
 import Card from './Card'
-import sampleData from '../fixtures/mock_data.json'
+
+const apiHost = process.env.REACT_APP_API_HOST
+console.log(apiHost)
 
 class Home extends React.Component {
   constructor () {
@@ -15,7 +19,10 @@ class Home extends React.Component {
   }
 
   async componentDidMount () {
-    this.setState({ ballots: sampleData })
+    const url = urljoin(apiHost, '/api/ballots')
+    const response = await axios.get(url)
+    const ballots = response.data
+    this.setState({ ballots })
   }
 
   render () {
