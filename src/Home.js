@@ -5,7 +5,6 @@ import urljoin from 'url-join'
 import Card from './Card'
 
 const apiHost = process.env.REACT_APP_API_HOST
-console.log(apiHost)
 
 class Home extends React.Component {
   constructor () {

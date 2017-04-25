@@ -1,10 +1,21 @@
 import React from 'react'
+import getFormData from 'get-form-data'
+import axios from 'axios'
+import urljoin from 'url-join'
+
+const apiHost = process.env.REACT_APP_API_HOST
 
 class Submit extends React.Component {
+  constructor () {
+    super()
+    this.state = { status: null }
+  }
+
   render () {
     return (
       <div className='row columns'>
-        <form>
+        {this.state.status && StatusBox(this.state.status)}
+        <form onSubmit={this.onSubmit.bind(this)}>
 
           <div className='row columns'>
             <label>
@@ -44,6 +55,33 @@ class Submit extends React.Component {
       </div>
     )
   }
+
+  async onSubmit (evt) {
+    evt.preventDefault()
+    const formData = getFormData(evt.target)
+    const url = urljoin(apiHost, '/api/ballots')
+    const response = await axios.post(url, formData)
+    if (response.status >= 200 && response.status < 300) {
+      this.setState({ status: 'submitted' })
+    } else {
+      this.setState({ status: 'failed' })
+    }
+  }
+}
+
+function StatusBox (status) {
+  const className = (status === 'submitted')
+    ? 'callout success'
+    : 'callout alert'
+  const contents = (status === 'submitted')
+    ? 'Thanks for submitting your sample ballot. It will be reviewed and published shortly.'
+    : 'There was an issue submitting your sample ballot.'
+
+  return (
+    <div className={className}>
+      <p>{contents}</p>
+    </div>
+  )
 }
 
 export default Submit
